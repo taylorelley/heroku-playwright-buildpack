@@ -1,6 +1,7 @@
 # Heroku Playwright Buildpack
 
 This buildpack installs all the needed dependencies to use Playwright with Chromium and Firefox on Heroku.
+It supports the heroku-18, heroku-20, heroku-22, and heroku-24 stacks.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mxschmitt/heroku-playwright-example)
 
@@ -56,7 +57,7 @@ const { firefox } = require("playwright-firefox");
 
 ## Best practises
 
-It's common to only install the [browser-specific NPM packages](https://playwright.dev/#version=v1.1.1&path=docs%2Finstallation.md&q=download-single-browser-binary), which will reduce installation time and slug size on Heroku in the end, that should fix also the error that the slug size is too large.
+It's common to only install the [browser-specific NPM packages](https://playwright.dev/docs/installation#download-single-browser-binary), which will reduce installation time and slug size on Heroku in the end, that should fix also the error that the slug size is too large.
 
 If you encounter this error at runtime, it means that you are missing the chromium binary, which can be installed with `playwright install chromium`.
 
