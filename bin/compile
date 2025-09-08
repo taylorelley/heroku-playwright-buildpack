@@ -26,16 +26,21 @@ install_system_deps() {
 	local build_tmpdir=$(mktemp -d)
 	mkdir -p $build_tmpdir
 
-	SUPPORTED_BROWSERS=${PLAYWRIGHT_BUILDPACK_BROWSERS:-chromium,firefox,webkit}
-	echo "Installing Playwright dependencies (env: PLAYWRIGHT_BUILDPACK_BROWSERS) for $SUPPORTED_BROWSERS."
+        SUPPORTED_BROWSERS=${PLAYWRIGHT_BUILDPACK_BROWSERS:-chromium,firefox,webkit}
+        echo "Installing Playwright dependencies (env: PLAYWRIGHT_BUILDPACK_BROWSERS) for $SUPPORTED_BROWSERS."
 
-	if [[ "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
-		cat << EOF >>$build_tmpdir/Aptfile
+        local libasound_package="libasound2"
+        if [[ "$STACK" == "heroku-24" ]]; then
+                libasound_package="libasound2t64"
+        fi
+
+        if [[ "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
+                cat << EOF >>$build_tmpdir/Aptfile
 # Chromium dependencies
 libnspr4
 libnss3
 libxss1
-libasound2
+$libasound_package
 fonts-noto-color-emoji
 libgbm1
 libatk-bridge2.0-0
@@ -44,7 +49,7 @@ libxrandr2
 libatspi2.0-0
 libxshmfence-dev
 EOF
-	fi
+        fi
 
 	if [[ "$SUPPORTED_BROWSERS" == *"firefox"* ]]; then
 		cat << EOF >>$build_tmpdir/Aptfile
